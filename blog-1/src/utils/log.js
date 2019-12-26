@@ -8,7 +8,7 @@
  function createWriteStream(fileName) {
      const fullFilename = path.join(__dirname,'../','../','logs', fileName)
      const writeStream = fs.createWriteStream(fullFilename, {
-         flags: 'a'
+         flags: 'a' // a 文件中新增内容
      })
      return writeStream
  }

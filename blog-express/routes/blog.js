@@ -3,6 +3,7 @@ var router = express.Router();
 const { getList, getDetail, newBlog, updateBlog, delBlog } = require('../controller/blog')
 const { SucessModel, ErrorModel} = require('../model/resModel')
 
+const loginCheck = require('../middleware/loginCheck')
 /* GET home page. */
 router.get('/list', function(req, res, next) {
        let author = req.query.author || ''
@@ -16,6 +17,10 @@ router.get('/list', function(req, res, next) {
             // if(loginCheckResult) {
             //     return loginCheckResult
             // }
+            if(req.session.username == null) {
+              res.json(new ErrorModel('未登录'))
+              return
+            }
             author = req.session.username
         }
        
@@ -25,10 +30,55 @@ router.get('/list', function(req, res, next) {
         })
 });
 router.get('/detail', function(req, res, next) {
-  res.json({
-      errno: 0,
-      data: 'ok'
-  });
+  let result = getDetail(req.query.id)
+ 
+        return result.then(data=> {
+          res.json(new SucessModel(data));
+           
+        })
+  
 });
+router.post('/new', loginCheck, function(req, res, next) {
+  
+ 
+
+ req.body.author= req.session.username 
+ const result = newBlog(req.body)
+return result.then(data=> {
+     res.json(new SucessModel(data)) 
+ })
+  
+});
+router.post('/update', loginCheck, function(req, res, next) {
+  
+ 
+
+  const result = updateBlog(req.query.id,req.body)
+  return result.then(val => {
+      if(val) {
+          res.json(new SucessModel()) 
+      } else {
+          res.json(new ErrorModel('更新博客失败')) 
+      }
+   })
+   
+ });
+ router.post('/del', loginCheck, function(req, res, next) {
+  
+ 
+
+  const author = req.session.username // 假数据，待开发登录时再改成真数据
+         const result = delBlog(req.query.id,author)
+         return result.then(val => {
+            if(val) {
+                res.json(new SucessModel()) 
+            } else {
+              res.json(new ErrorModel('删除博客失败'))
+                
+            }
+
+         })
+   
+ });
 
 module.exports = router;

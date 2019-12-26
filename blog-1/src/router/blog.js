@@ -24,6 +24,7 @@ const handleBlogRouter = (req, res) => {
         // return new SucessModel(listData)
        
         if(req.query.isadmin) {
+            console.log('is admin')
             // 管理界面
             const loginCheckResult = loginCheck(req)
             if(loginCheckResult) {
