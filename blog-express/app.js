@@ -27,7 +27,7 @@ app.use(logger('dev', {
   // 线上环境
   const logFileName = path.join(__dirname,'logs','access.log')
   const writeStream = fs.createWriteStream(logFileName,{
-    flags: 'a'
+    flags: 'a' // 写入文件内容 继续往下写
   })
   app.use(logger('combined', {
     // stream: process.stdout //m默认配置

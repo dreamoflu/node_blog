@@ -19,3 +19,12 @@
 ## 小知识 切换npm版本
  nvm use --delete-prefix 8.12.0
 
+## 安装koa2（使用脚手架）
+1. npm install koa-generator -g
+2. Koa2 <项目名称>(初始化 创建文件夹)
+3. npm install
+4. npm run dev
+
+## 登录插件
+1. koa-generic-session
+2. koa-redis
